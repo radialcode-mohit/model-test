@@ -83,8 +83,11 @@
             display: none;
         }
 
-        #previewPlayer {
+        #previewFrame {
             width: 100%;
+            height: 400px;
+            /* Set the height as needed */
+            border: none;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -98,7 +101,7 @@
         <label for="fileInput">Choose an audio/video file:</label>
         <input type="file" id="fileInput" accept="audio/*,video/*" required>
         <br>
-        <input type="button" value="Preview" id="previewButton" onclick="previewVideo()" style="display: none;">
+        <input type="button" value="Preview" id="previewButton" onclick="previewFile()" style="display: none;">
         <br>
         <input type="button" value="Submit" onclick="displayFileInfo()">
     </form>
@@ -108,8 +111,8 @@
     <button id="togglePreviewButton" onclick="togglePreview()" style="display: none;">Toggle Preview</button>
 
     <div id="videoPreview">
-        <h2>Video Preview</h2>
-        <video controls id="previewPlayer"></video>
+        <h2>File Preview</h2>
+        <iframe id="previewFrame" frameborder="0" allowfullscreen></iframe>
     </div>
 
     <script>
@@ -148,25 +151,25 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
         }
 
-        function previewVideo() {
+        function previewFile() {
             const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
 
-            if (file && file.type.includes('video')) {
+            if (file) {
                 const videoPreview = document.getElementById('videoPreview');
-                const previewPlayer = document.getElementById('previewPlayer');
-                previewPlayer.src = URL.createObjectURL(file);
+                const previewFrame = document.getElementById('previewFrame');
+                previewFrame.src = URL.createObjectURL(file);
                 videoPreview.style.display = 'block';
                 document.getElementById('togglePreviewButton').textContent = 'Hide Preview';
             } else {
-                alert('Please select a valid video file.');
+                alert('Please select a valid file.');
             }
         }
 
         function togglePreview() {
             const videoPreview = document.getElementById('videoPreview');
             const togglePreviewButton = document.getElementById('togglePreviewButton');
-            const previewPlayer = document.getElementById('previewPlayer');
+            const previewFrame = document.getElementById('previewFrame');
 
             if (videoPreview.style.display === 'none') {
                 videoPreview.style.display = 'block';
@@ -174,7 +177,7 @@
             } else {
                 videoPreview.style.display = 'none';
                 togglePreviewButton.textContent = 'Show Preview';
-                previewPlayer.src = '';
+                previewFrame.src = '';
             }
         }
     </script>
